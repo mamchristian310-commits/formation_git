@@ -1,3 +1,4 @@
+import json
 # PROJET QUESTIONNAIRE V3 : POO
 #
 # - Pratiquer sur la POO
@@ -25,10 +26,13 @@ class Question:
         self.choix = choix
         self.bonne_reponse = bonne_reponse
 
-    def FromData(data):
-        # ....
-        q = Question(data[2], data[0], data[1])
-        return q
+    # def FromData(data):
+    #     for q_data in data["questions"]:
+    #         for k,v in q_data["choix"].items():
+    #             if v:
+    #                 bonne_reponse = k
+    #         q = Question(q_data["titre"], list(q_data["choix"].keys()), bonne_reponse)
+    #     return q
 
     def poser(self):
         print("QUESTION")
@@ -88,12 +92,24 @@ lancer_questionnaire(questionnaire)"""
 # q = Question.FromData(data)
 # print(q.__dict__)
 
-Questionnaire(
-    (
-    Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
-    Question("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
-    Question("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
-    )
-).lancer()
+# Questionnaire(
+#     (
+#     Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
+#     Question("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
+#     Question("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
+#     )
+# ).lancer()
 
+json_data="animaux_leschats_confirme.json"
+with open(json_data, "r", encoding="utf-8") as json_file:
+    data = json.load(json_file) 
 
+questions_list = []
+for q_data in data["questions"]:
+    for k,v in q_data["choix"]:
+        if v:
+            bonne_reponse = k
+    q = Question(q_data["titre"], [ch[0] for ch in q_data["choix"]], bonne_reponse)
+    questions_list.append(q)
+    
+Questionnaire(questions_list).lancer()
