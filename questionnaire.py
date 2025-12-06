@@ -129,16 +129,18 @@ def choose_file():
         return choose_file()
     return json_data
 
-json_data = choose_file()
-with open(json_data, "r", encoding="utf-8") as json_file:
-    data = json.load(json_file) 
+if __name__ == "__main__":
+    json_data = choose_file()
+    with open(json_data, "r", encoding="utf-8") as json_file:
+        data = json.load(json_file) 
 
-questions_list = []
-for idx, q_data in enumerate(data["questions"], start=1):
-    for k,v in q_data["choix"]:
-        if v:
-            bonne_reponse = k
-    q = Question(q_data["titre"], [ch[0] for ch in q_data["choix"]], bonne_reponse, idx)
-    questions_list.append(q)
-    
-Questionnaire(questions_list).lancer()
+    questions_list = []
+    for idx, q_data in enumerate(data["questions"], start=1):
+        for k,v in q_data["choix"]:
+            if v:
+                bonne_reponse = k
+        q = Question(q_data["titre"], [ch[0] for ch in q_data["choix"]], bonne_reponse, idx)
+        questions_list.append(q)
+        
+    Questionnaire(questions_list).lancer()
+
