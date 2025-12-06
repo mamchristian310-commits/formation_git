@@ -21,10 +21,11 @@ import json
 #
 
 class Question:
-    def __init__(self, titre, choix, bonne_reponse):
+    def __init__(self, titre, choix, bonne_reponse, numero=0):
         self.titre = titre
         self.choix = choix
         self.bonne_reponse = bonne_reponse
+        self.numero=numero
 
     # def FromData(data):
     #     for q_data in data["questions"]:
@@ -35,7 +36,7 @@ class Question:
     #     return q
 
     def poser(self):
-        print("QUESTION")
+        print(f"QUESTION {self.numero} :")
         print("  " + self.titre)
         for i in range(len(self.choix)):
             print("  ", i+1, "-", self.choix[i])
@@ -105,11 +106,11 @@ with open(json_data, "r", encoding="utf-8") as json_file:
     data = json.load(json_file) 
 
 questions_list = []
-for q_data in data["questions"]:
+for idx, q_data in enumerate(data["questions"], start=1):
     for k,v in q_data["choix"]:
         if v:
             bonne_reponse = k
-    q = Question(q_data["titre"], [ch[0] for ch in q_data["choix"]], bonne_reponse)
+    q = Question(q_data["titre"], [ch[0] for ch in q_data["choix"]], bonne_reponse, idx)
     questions_list.append(q)
     
 Questionnaire(questions_list).lancer()
