@@ -101,7 +101,35 @@ lancer_questionnaire(questionnaire)"""
 #     )
 # ).lancer()
 
-json_data="animaux_leschats_confirme.json"
+def choose_file():
+    JASON_DATA=[
+        "animaux_leschats_confirme.json",
+        "animaux_leschats_debutant.json",
+        "animaux_leschats_expert.json",
+        "arts_museedulouvre_confirme.json",
+        "arts_museedulouvre_debutant.json",
+        "arts_museedulouvre_expert.json",
+        "cinema_alien_confirme.json",
+        "cinema_alien_debutant.json",
+        "cinema_alien_expert.json",
+        "cinema_starwars_confirme.json",
+        "cinema_starwars_debutant.json",
+        "cinema_starwars_expert.json"
+    ]
+    print("LISTE DES FICHIERS DISPONIBLES :")
+    for j in JASON_DATA:
+        print(" -", j)
+    try:
+        json_data=input("Nom du fichier json de questionnaire à charger (ex: "+JASON_DATA[0]+") : ")
+        if json_data not in JASON_DATA:
+            print(f"ERREUR : Le fichier {json_data} n'est pas dans la liste des fichiers disponibles")
+            return choose_file()
+    except:
+        print(f"ERREUR : Le fichier {json_data} n'existe pas")
+        return choose_file()
+    return json_data
+
+json_data = choose_file()
 with open(json_data, "r", encoding="utf-8") as json_file:
     data = json.load(json_file) 
 
